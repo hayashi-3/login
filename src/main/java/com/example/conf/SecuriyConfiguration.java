@@ -26,7 +26,10 @@ public class SecuriyConfiguration extends WebSecurityConfigurerAdapter {
 	// anyRequest()はログインしないとアプリを使えない。httpBasic()は認証方法。
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().anyRequest().authenticated().and().formLogin();
+		http.authorizeRequests().antMatchers("/css/**").permitAll().antMatchers("/registration").permitAll()
+				.anyRequest().authenticated().and().formLogin().loginPage("/login").usernameParameter("email")
+				.permitAll().and().logout().logoutUrl("/logout").invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID");
 	}
 
 	// Beanで依存性注入の管理対象
